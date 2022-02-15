@@ -1,1 +1,797 @@
+import os
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+import pandas as pd
+from datetime import date
+import gspread
+from df2gspread import df2gspread as d2g
+import gspread_dataframe as gd
+from oauth2client.service_account import ServiceAccountCredentials
 
+# Setting file path for chromedriver on mac
+# PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
+# DRIVER_BIN = os.path.join(PROJECT_ROOT, "bin/chromedriver 3")
+# driver = webdriver.Chrome(executable_path = DRIVER_BIN)
+
+# Setting file path for chromedriver on PC
+os.environ['PATH'] += r"INSERT_YOUR_FILE_PATH_HERE"
+driver = webdriver.Chrome()
+
+# Setting dataframe row and column limits to max
+pd.set_option('display.max_columns', None)  # or 1000
+pd.set_option('display.max_rows', None)  # or 1000
+
+# Taco ------------------------------------------------------------------------------------------------------------------------------------------------------
+
+# Taco Menu URL
+driver.get("https://www.tacobell.com/food/tacos")
+
+# Allowing time for the site to load
+driver.implicitly_wait(8)
+
+taco_name_class = driver.find_elements(By.CLASS_NAME, "product-name")
+taco_price_class = driver.find_elements(By.CLASS_NAME, "product-price")
+taco_calories_class = driver.find_elements(By.CLASS_NAME, "product-calorie")
+
+# Creating empty list to store taco names in
+taco_name = []
+# Iterating through selenium object that contains taco names, converting to text and adding to taco name list.
+for item in taco_name_class:
+    taco_name.append(item.text)
+print(taco_name)
+
+# Creating empty list to store taco prices in
+taco_price = []
+# Iterating through selenium object that contains taco prices, converting to text and adding to taco price list.
+for item in taco_price_class:
+    taco_price.append(item.text)
+print(taco_price)
+
+# Creating empty list to store taco calories in
+taco_calories = []
+# Iterating through selenium object that contains taco calories, converting to text and adding to taco calories list.
+for item in taco_calories_class:
+    taco_calories.append(item.text)
+print(taco_calories)
+
+# Creating a taco dictionary using individual lists
+taco_dict = {
+    'Name': taco_name,
+    'Price': taco_price,
+    'Calories': taco_calories
+}
+
+# Creating taco dataframe
+taco_df = pd.DataFrame(taco_dict)
+
+# Creating additional columns for menu item type and menu date
+taco_df['Item Type'] = pd.Series(['Taco' for x in range(len(taco_df.index))])
+taco_df['Menu Date'] = pd.Series([date.today() for x in range(len(taco_df.index))])
+
+print(date.today())
+print(taco_df)
+
+# Burritos ------------------------------------------------------------------------------------------------------------------------------------------------------
+
+# Burrito Menu URL
+driver.get("https://www.tacobell.com/food/burritos")
+
+# Allowing time for the site to load
+driver.implicitly_wait(8)
+
+burrito_name_class = driver.find_elements(By.CLASS_NAME, "product-name")
+burrito_price_class = driver.find_elements(By.CLASS_NAME, "product-price")
+burrito_calories_class = driver.find_elements(By.CLASS_NAME, "product-calorie")
+
+# Creating empty list to store burrito names in
+burrito_name = []
+# Iterating through selenium object that contains burrito names, converting to text and adding to burrito name list.
+for item in burrito_name_class:
+    burrito_name.append(item.text)
+print(burrito_name)
+
+# Creating empty list to store burrito prices in
+burrito_price = []
+# Iterating through selenium object that contains burrito prices, converting to text and adding to burrito price list.
+for item in burrito_price_class:
+    burrito_price.append(item.text)
+print(burrito_price)
+
+# Creating empty list to store burrito calories in
+burrito_calories = []
+# Iterating through selenium object that contains burrito calories, converting to text and adding to burrito calories list.
+for item in burrito_calories_class:
+    burrito_calories.append(item.text)
+print(burrito_calories)
+
+# Creating a burrito dictionary using individual lists
+burrito_dict = {
+    'Name': burrito_name,
+    'Price': burrito_price,
+    'Calories': burrito_calories
+}
+
+# Creating burrito dataframe
+burrito_df = pd.DataFrame(burrito_dict)
+
+# Creating additional columns for menu item type and menu date
+burrito_df['Item Type'] = pd.Series(['Burrito' for x in range(len(burrito_df.index))])
+burrito_df['Menu Date'] = pd.Series([date.today() for x in range(len(burrito_df.index))])
+
+print(burrito_df)
+
+# Nachos ------------------------------------------------------------------------------------------------------------------------------------------------------
+
+# Nachos Menu URL
+driver.get("https://www.tacobell.com/food/nachos")
+
+# Allowing time for the site to load
+driver.implicitly_wait(8)
+
+nachos_name_class = driver.find_elements(By.CLASS_NAME, "product-name")
+nachos_price_class = driver.find_elements(By.CLASS_NAME, "product-price")
+nachos_calories_class = driver.find_elements(By.CLASS_NAME, "product-calorie")
+
+# Creating empty list to store nachos names in
+nachos_name = []
+# Iterating through selenium object that contains nachos names, converting to text and adding to nachos name list.
+for item in nachos_name_class:
+    nachos_name.append(item.text)
+print(nachos_name)
+
+# Creating empty list to store nachos prices in
+nachos_price = []
+# Iterating through selenium object that contains nachos prices, converting to text and adding to nachos price list.
+for item in nachos_price_class:
+    nachos_price.append(item.text)
+print(nachos_price)
+
+# Creating empty list to store nachos calories in
+nachos_calories = []
+# Iterating through selenium object that contains nachos calories, converting to text and adding to nachos calories list.
+for item in nachos_calories_class:
+    nachos_calories.append(item.text)
+print(nachos_calories)
+
+#Creating a nachos dictionary using individual lists
+nachos_dict = {
+    'Name': nachos_name,
+    'Price': nachos_price,
+    'Calories': nachos_calories
+}
+
+# Creating nachos dataframe
+nachos_df = pd.DataFrame(nachos_dict)
+
+# Creating additional columns for menu item type and menu date
+nachos_df['Item Type'] = pd.Series(['Nachos' for x in range(len(nachos_df.index))])
+nachos_df['Menu Date'] = pd.Series([date.today() for x in range(len(nachos_df.index))])
+
+print(nachos_df)
+
+# Quesadillas ------------------------------------------------------------------------------------------------------------------------------------------------------
+
+# Quesadillas Menu URL
+driver.get("https://www.tacobell.com/food/quesadillas")
+
+# Allowing time for the site to load
+driver.implicitly_wait(8)
+
+quesadillas_name_class = driver.find_elements(By.CLASS_NAME, "product-name")
+quesadillas_price_class = driver.find_elements(By.CLASS_NAME, "product-price")
+quesadillas_calories_class = driver.find_elements(By.CLASS_NAME, "product-calorie")
+
+# Creating empty list to store quesadillas names in
+quesadillas_name = []
+# Iterating through selenium object that contains quesadillas names, converting to text and adding to quesadillas name list.
+for item in quesadillas_name_class:
+    quesadillas_name.append(item.text)
+print(quesadillas_name)
+
+# Creating empty list to store quesadillas prices in
+quesadillas_price = []
+# Iterating through selenium object that contains quesadillas prices, converting to text and adding to quesadillas price list.
+for item in quesadillas_price_class:
+    quesadillas_price.append(item.text)
+print(quesadillas_price)
+
+# Creating empty list to store quesadillas calories in
+quesadillas_calories = []
+# Iterating through selenium object that contains quesadillas calories, converting to text and adding to quesadillas calories list.
+for item in quesadillas_calories_class:
+    quesadillas_calories.append(item.text)
+print(quesadillas_calories)
+
+#Creating a quesadillas dictionary using individual lists
+quesadillas_dict = {
+    'Name': quesadillas_name,
+    'Price': quesadillas_price,
+    'Calories': quesadillas_calories
+}
+
+# Creating quesadillas dataframe
+quesadillas_df = pd.DataFrame(quesadillas_dict)
+
+# Creating additional columns for menu item type and menu date
+quesadillas_df['Item Type'] = pd.Series(['Quesadilla' for x in range(len(quesadillas_df.index))])
+quesadillas_df['Menu Date'] = pd.Series([date.today() for x in range(len(quesadillas_df.index))])
+
+print(quesadillas_df)
+
+
+# Specialties ------------------------------------------------------------------------------------------------------------------------------------------------------
+
+# Specialties Menu URL
+driver.get("https://www.tacobell.com/food/specialties")
+
+# Allowing time for the site to load
+driver.implicitly_wait(8)
+
+specialties_name_class = driver.find_elements(By.CLASS_NAME, "product-name")
+specialties_price_class = driver.find_elements(By.CLASS_NAME, "product-price")
+specialties_calories_class = driver.find_elements(By.CLASS_NAME, "product-calorie")
+
+# Creating empty list to store specialties names in
+specialties_name = []
+# Iterating through selenium object that contains specialties names, converting to text and adding to specialties name list.
+for item in specialties_name_class:
+    specialties_name.append(item.text)
+print(specialties_name)
+
+# Creating empty list to store specialties prices in
+specialties_price = []
+# Iterating through selenium object that contains specialties prices, converting to text and adding to specialties price list.
+for item in specialties_price_class:
+    specialties_price.append(item.text)
+print(specialties_price)
+
+# Creating empty list to store specialties calories in
+specialties_calories = []
+# Iterating through selenium object that contains specialties calories, converting to text and adding to specialties calories list.
+for item in specialties_calories_class:
+    specialties_calories.append(item.text)
+print(specialties_calories)
+
+#Creating a specialties dictionary using individual lists
+specialties_dict = {
+    'Name': specialties_name,
+    'Price': specialties_price,
+    'Calories': specialties_calories
+}
+
+# Creating specialties dataframe
+specialties_df = pd.DataFrame(specialties_dict)
+
+# Creating additional columns for menu item type and menu date
+specialties_df['Item Type'] = pd.Series(['Specialty' for x in range(len(specialties_df.index))])
+specialties_df['Menu Date'] = pd.Series([date.today() for x in range(len(specialties_df.index))])
+
+print(specialties_df)
+
+# Value ------------------------------------------------------------------------------------------------------------------------------------------------------
+
+# Value Menu URL
+driver.get("https://www.tacobell.com/food/cravings-value-menu")
+
+# Allowing time for the site to load
+driver.implicitly_wait(8)
+
+value_name_class = driver.find_elements(By.CLASS_NAME, "product-name")
+value_price_class = driver.find_elements(By.CLASS_NAME, "product-price")
+value_calories_class = driver.find_elements(By.CLASS_NAME, "product-calorie")
+
+# Creating empty list to store value names in
+value_name = []
+# Iterating through selenium object that contains value names, converting to text and adding to value name list.
+for item in value_name_class:
+    value_name.append(item.text)
+print(value_name)
+
+# Creating empty list to store value prices in
+value_price = []
+# Iterating through selenium object that contains value prices, converting to text and adding to value price list.
+for item in value_price_class:
+    value_price.append(item.text)
+print(value_price)
+
+# Creating empty list to store value calories in
+value_calories = []
+# Iterating through selenium object that contains value calories, converting to text and adding to value calories list.
+for item in value_calories_class:
+    value_calories.append(item.text)
+print(value_calories)
+
+# Creating a value dictionary using individual lists
+value_dict = {
+    'Name': value_name,
+    'Price': value_price,
+    'Calories': value_calories
+}
+
+# Creating value dataframe
+value_df = pd.DataFrame(value_dict)
+
+# Creating additional columns for menu item type and menu date
+value_df['Item Type'] = pd.Series(['Value' for x in range(len(value_df.index))])
+value_df['Menu Date'] = pd.Series([date.today() for x in range(len(value_df.index))])
+
+print(value_df)
+
+# New ------------------------------------------------------------------------------------------------------------------------------------------------------
+
+# New Menu URL
+driver.get("https://www.tacobell.com/food/new")
+
+# Allowing time for the site to load
+driver.implicitly_wait(8)
+
+new_name_class = driver.find_elements(By.CLASS_NAME, "product-name")
+new_price_class = driver.find_elements(By.CLASS_NAME, "product-price")
+new_calories_class = driver.find_elements(By.CLASS_NAME, "product-calorie")
+
+# Creating empty list to store new names in
+new_name = []
+# Iterating through selenium object that contains new names, converting to text and adding to new name list.
+for item in new_name_class:
+    new_name.append(item.text)
+print(new_name)
+
+# Creating empty list to store new prices in
+new_price = []
+# Iterating through selenium object that contains new prices, converting to text and adding to new price list.
+for item in new_price_class:
+    new_price.append(item.text)
+print(new_price)
+
+# Creating empty list to store new calories in
+new_calories = []
+# Iterating through selenium object that contains new calories, converting to text and adding to new calories list.
+for item in new_calories_class:
+    new_calories.append(item.text)
+print(new_calories)
+
+# Creating a new dictionary using individual lists
+new_dict = {
+    'Name': new_name,
+    'Price': new_price,
+    'Calories': new_calories
+}
+
+# Creating new dataframe
+new_df = pd.DataFrame(new_dict)
+
+# Creating additional columns for menu item type and menu date
+new_df['Item Type'] = pd.Series(['New' for x in range(len(new_df.index))])
+new_df['Menu Date'] = pd.Series([date.today() for x in range(len(new_df.index))])
+
+print(new_df)
+
+# Combos ------------------------------------------------------------------------------------------------------------------------------------------------------
+
+# Combos Menu URL
+driver.get("https://www.tacobell.com/food/deals-and-combos")
+
+# Allowing time for the site to load
+driver.implicitly_wait(8)
+
+combos_name_class = driver.find_elements(By.CLASS_NAME, "product-name")
+combos_price_class = driver.find_elements(By.CLASS_NAME, "product-price")
+combos_calories_class = driver.find_elements(By.CLASS_NAME, "product-calorie")
+
+# Creating empty list to store combos names in
+combos_name = []
+# Iterating through selenium object that contains combos names, converting to text and adding to combos name list.
+for item in combos_name_class:
+    combos_name.append(item.text)
+print(combos_name)
+
+# Creating empty list to store combos prices in
+combos_price = []
+# Iterating through selenium object that contains combos prices, converting to text and adding to combos price list.
+for item in combos_price_class:
+    combos_price.append(item.text)
+print(combos_price)
+
+# Creating empty list to store combos calories in
+combos_calories = []
+# Iterating through selenium object that contains combos calories, converting to text and adding to combos calories list.
+for item in combos_calories_class:
+    combos_calories.append(item.text)
+print(combos_calories)
+
+#Creating a combos dictionary using individual lists
+combos_dict = {
+    'Name': combos_name,
+    'Price': combos_price,
+    'Calories': combos_calories
+}
+
+# Creating combos dataframe
+combos_df = pd.DataFrame(combos_dict)
+
+# Creating additional columns for menu item type and menu date
+combos_df['Item Type'] = pd.Series(['Combo' for x in range(len(combos_df.index))])
+combos_df['Menu Date'] = pd.Series([date.today() for x in range(len(combos_df.index))])
+
+print(combos_df)
+
+# Sides ------------------------------------------------------------------------------------------------------------------------------------------------------
+
+# Sides Menu URL
+driver.get("https://www.tacobell.com/food/sides-sweets")
+
+# Allowing time for the site to load
+driver.implicitly_wait(8)
+
+sides_name_class = driver.find_elements(By.CLASS_NAME, "product-name")
+sides_price_class = driver.find_elements(By.CLASS_NAME, "product-price")
+sides_calories_class = driver.find_elements(By.CLASS_NAME, "product-calorie")
+
+# Creating empty list to store sides names in
+sides_name = []
+# Iterating through selenium object that contains sides names, converting to text and adding to sides name list.
+for item in sides_name_class:
+    sides_name.append(item.text)
+print(sides_name)
+
+# Creating empty list to store sides prices in
+sides_price = []
+# Iterating through selenium object that contains sides prices, converting to text and adding to sides price list.
+for item in sides_price_class:
+    sides_price.append(item.text)
+print(sides_price)
+
+# Creating empty list to store sides calories in
+sides_calories = []
+# Iterating through selenium object that contains sides calories, converting to text and adding to sides calories list.
+for item in sides_calories_class:
+    sides_calories.append(item.text)
+print(sides_calories)
+
+#Creating a sides dictionary using individual lists
+sides_dict = {
+    'Name': sides_name,
+    'Price': sides_price,
+    'Calories': sides_calories
+}
+
+# Creating sides dataframe
+sides_df = pd.DataFrame(sides_dict)
+
+# Creating additional columns for menu item type and menu date
+sides_df['Item Type'] = pd.Series(['Side' for x in range(len(sides_df.index))])
+sides_df['Menu Date'] = pd.Series([date.today() for x in range(len(sides_df.index))])
+
+print(sides_df)
+
+# Drinks ------------------------------------------------------------------------------------------------------------------------------------------------------
+
+# Drinks Menu URL
+driver.get("https://www.tacobell.com/food/drinks")
+
+# Allowing time for the site to load
+driver.implicitly_wait(8)
+
+drinks_name_class = driver.find_elements(By.CLASS_NAME, "product-name")
+drinks_price_class = driver.find_elements(By.CLASS_NAME, "product-price")
+drinks_calories_class = driver.find_elements(By.CLASS_NAME, "product-calorie")
+
+# Creating empty list to store drinks names in
+drinks_name = []
+# Iterating through selenium object that contains drinks names, converting to text and adding to drinks name list.
+for item in drinks_name_class:
+    drinks_name.append(item.text)
+print(drinks_name)
+
+# Creating empty list to store drinks prices in
+drinks_price = []
+# Iterating through selenium object that contains drinks prices, converting to text and adding to drinks price list.
+for item in drinks_price_class:
+    drinks_price.append(item.text)
+print(drinks_price)
+
+# Creating empty list to store drinks calories in
+drinks_calories = []
+# Iterating through selenium object that contains drinks calories, converting to text and adding to drinks calories list.
+for item in drinks_calories_class:
+    drinks_calories.append(item.text)
+print(drinks_calories)
+
+#Creating a drinks dictionary using individual lists
+drinks_dict = {
+    'Name': drinks_name,
+    'Price': drinks_price,
+    'Calories': drinks_calories
+}
+
+# Creating drinks dataframe
+drinks_df = pd.DataFrame(drinks_dict)
+
+# Creating additional columns for menu item type and menu date
+drinks_df['Item Type'] = pd.Series(['Drink' for x in range(len(drinks_df.index))])
+drinks_df['Menu Date'] = pd.Series([date.today() for x in range(len(drinks_df.index))])
+
+print(drinks_df)
+
+# Group ------------------------------------------------------------------------------------------------------------------------------------------------------
+
+# Group Menu URL
+driver.get("https://www.tacobell.com/food/party-packs")
+
+# Allowing time for the site to load
+driver.implicitly_wait(8)
+
+group_name_class = driver.find_elements(By.CLASS_NAME, "product-name")
+group_price_class = driver.find_elements(By.CLASS_NAME, "product-price")
+group_calories_class = driver.find_elements(By.CLASS_NAME, "product-calorie")
+
+# Creating empty list to store group names in
+group_name = []
+# Iterating through selenium object that contains group names, converting to text and adding to group name list.
+for item in group_name_class:
+    group_name.append(item.text)
+print(group_name)
+
+# Creating empty list to store group prices in
+group_price = []
+# Iterating through selenium object that contains group prices, converting to text and adding to group price list.
+for item in group_price_class:
+    group_price.append(item.text)
+print(group_price)
+
+# Creating empty list to store group calories in
+group_calories = []
+# Iterating through selenium object that contains group calories, converting to text and adding to group calories list.
+for item in group_calories_class:
+    group_calories.append(item.text)
+print(group_calories)
+
+#Creating a groups dictionary using individual lists
+group_dict = {
+    'Name': group_name,
+    'Price': group_price,
+    'Calories': group_calories
+}
+
+# Creating groups dataframe
+group_df = pd.DataFrame(group_dict)
+
+# Creating additional columns for menu item type and menu date
+group_df['Item Type'] = pd.Series(['Group' for x in range(len(group_df.index))])
+group_df['Menu Date'] = pd.Series([date.today() for x in range(len(group_df.index))])
+
+print(group_df)
+
+# Vegetarian ------------------------------------------------------------------------------------------------------------------------------------------------------
+
+# Vegetarian Menu URL
+driver.get("https://www.tacobell.com/food/vegetarian")
+
+# Allowing time for the site to load
+driver.implicitly_wait(8)
+
+vegetarian_name_class = driver.find_elements(By.CLASS_NAME, "product-name")
+vegetarian_price_class = driver.find_elements(By.CLASS_NAME, "product-price")
+vegetarian_calories_class = driver.find_elements(By.CLASS_NAME, "product-calorie")
+
+# Creating empty list to store vegetarian names in
+vegetarian_name = []
+# Iterating through selenium object that contains vegetarian names, converting to text and adding to vegetarian name list.
+for item in vegetarian_name_class:
+    vegetarian_name.append(item.text)
+print(vegetarian_name)
+
+# Creating empty list to store vegetarian prices in
+vegetarian_price = []
+# Iterating through selenium object that contains vegetarian prices, converting to text and adding to vegetarian price list.
+for item in vegetarian_price_class:
+    vegetarian_price.append(item.text)
+print(vegetarian_price)
+
+# Creating empty list to store vegetarian calories in
+vegetarian_calories = []
+# Iterating through selenium object that contains vegetarian calories, converting to text and adding to vegetarian calories list.
+for item in vegetarian_calories_class:
+    vegetarian_calories.append(item.text)
+print(vegetarian_calories)
+
+#Creating a vegetarian dictionary using individual lists
+vegetarian_dict = {
+    'Name': vegetarian_name,
+    'Price': vegetarian_price,
+    'Calories': vegetarian_calories
+}
+
+# Creating vegetarian dataframe
+vegetarian_df = pd.DataFrame(vegetarian_dict)
+
+# Creating additional columns for menu item type and menu date
+vegetarian_df['Item Type'] = pd.Series(['Vegetarian' for x in range(len(vegetarian_df.index))])
+vegetarian_df['Menu Date'] = pd.Series([date.today() for x in range(len(vegetarian_df.index))])
+
+print(vegetarian_df)
+
+# Bowls ------------------------------------------------------------------------------------------------------------------------------------------------------
+
+# Bowls Menu URL
+driver.get("https://www.tacobell.com/food/power-menu")
+
+# Allowing time for the site to load
+driver.implicitly_wait(8)
+
+bowl_name_class = driver.find_elements(By.CLASS_NAME, "product-name")
+bowl_price_class = driver.find_elements(By.CLASS_NAME, "product-price")
+bowl_calories_class = driver.find_elements(By.CLASS_NAME, "product-calorie")
+
+# Creating empty list to store bowl names in
+bowl_name = []
+# Iterating through selenium object that contains bowl names, converting to text and adding to bowl name list.
+for item in bowl_name_class:
+    bowl_name.append(item.text)
+print(bowl_name)
+
+# Creating empty list to store bowl prices in
+bowl_price = []
+# Iterating through selenium object that contains bowl prices, converting to text and adding to bowl price list.
+for item in bowl_price_class:
+    bowl_price.append(item.text)
+print(bowl_price)
+
+# Creating empty list to store bowl calories in
+bowl_calories = []
+# Iterating through selenium object that contains bowl calories, converting to text and adding to bowl calories list.
+for item in bowl_calories_class:
+    bowl_calories.append(item.text)
+print(bowl_calories)
+
+# Creating a bowl dictionary using individual lists
+bowl_dict = {
+    'Name': bowl_name,
+    'Price': bowl_price,
+    'Calories': bowl_calories
+}
+
+# Creating bowl dataframe
+bowl_df = pd.DataFrame(bowl_dict)
+
+# Creating additional columns for menu item type and menu date
+bowl_df['Item Type'] = pd.Series(['Bowl' for x in range(len(bowl_df.index))])
+bowl_df['Menu Date'] = pd.Series([date.today() for x in range(len(bowl_df.index))])
+
+print(bowl_df)
+
+# Breakfast ------------------------------------------------------------------------------------------------------------------------------------------------------
+
+# Breakfast Menu URL
+driver.get("https://www.tacobell.com/food/breakfast")
+
+# Allowing time for the site to load
+driver.implicitly_wait(8)
+
+breakfast_name_class = driver.find_elements(By.CLASS_NAME, "product-name")
+breakfast_price_class = driver.find_elements(By.CLASS_NAME, "product-price")
+breakfast_calories_class = driver.find_elements(By.CLASS_NAME, "product-calorie")
+
+# Creating empty list to store breakfast names in
+breakfast_name = []
+# Iterating through selenium object that contains breakfast names, converting to text and adding to breakfast name list.
+for item in breakfast_name_class:
+    breakfast_name.append(item.text)
+print(breakfast_name)
+
+# Creating empty list to store breakfast prices in
+breakfast_price = []
+# Iterating through selenium object that contains breakfast prices, converting to text and adding to breakfast price list.
+for item in breakfast_price_class:
+    breakfast_price.append(item.text)
+print(breakfast_price)
+
+# Creating empty list to store breakfast calories in
+breakfast_calories = []
+# Iterating through selenium object that contains breakfast calories, converting to text and adding to breakfast calories list.
+for item in breakfast_calories_class:
+    breakfast_calories.append(item.text)
+print(breakfast_calories)
+
+#Creating a breakfast dictionary using individual lists
+breakfast_dict = {
+    'Name': breakfast_name,
+    'Price': breakfast_price,
+    'Calories': breakfast_calories
+}
+
+# Creating breakfast dataframe
+breakfast_df = pd.DataFrame(breakfast_dict)
+
+# Creating additional columns for menu item type and menu date
+breakfast_df['Item Type'] = pd.Series(['Breakfast' for x in range(len(breakfast_df.index))])
+breakfast_df['Menu Date'] = pd.Series([date.today() for x in range(len(breakfast_df.index))])
+
+print(breakfast_df)
+
+# Online ------------------------------------------------------------------------------------------------------------------------------------------------------
+
+# Online Menu URL
+driver.get("https://www.tacobell.com/food/online-exclusives")
+
+# Allowing time for the site to load
+driver.implicitly_wait(8)
+
+online_name_class = driver.find_elements(By.CLASS_NAME, "product-name")
+online_price_class = driver.find_elements(By.CLASS_NAME, "product-price")
+online_calories_class = driver.find_elements(By.CLASS_NAME, "product-calorie")
+
+# Creating empty list to store online names in
+online_name = []
+# Iterating through selenium object that contains online names, converting to text and adding to online name list.
+for item in online_name_class:
+    online_name.append(item.text)
+print(online_name)
+
+# Creating empty list to store online prices in
+online_price = []
+# Iterating through selenium object that contains online prices, converting to text and adding to online price list.
+for item in online_price_class:
+    online_price.append(item.text)
+print(online_price)
+
+# Creating empty list to store online calories in
+online_calories = []
+# Iterating through selenium object that contains online calories, converting to text and adding to online calories list.
+for item in online_calories_class:
+    online_calories.append(item.text)
+print(online_calories)
+
+#Creating a online dictionary using individual lists
+online_dict = {
+    'Name': online_name,
+    'Price': online_price,
+    'Calories': online_calories
+}
+
+# Creating online dataframe
+online_df = pd.DataFrame(online_dict)
+
+# Creating additional columns for menu item type and menu date
+online_df['Item Type'] = pd.Series(['Online Exclusive' for x in range(len(online_df.index))])
+online_df['Menu Date'] = pd.Series([date.today() for x in range(len(online_df.index))])
+
+print(online_df)
+
+# Union all of the existing dataframes together
+unioned_df = pd.concat([new_df, online_df, combos_df, taco_df, burrito_df, nachos_df, quesadillas_df, specialties_df,
+                        sides_df, drinks_df, group_df, value_df, vegetarian_df, bowl_df, breakfast_df])
+
+# Reset index of newly unioned dataframe
+unioned_df = unioned_df.reset_index(drop=True)
+
+# Google Sheets Operations -----------------------------------------------------------------------------------------------------------------------------------------------
+
+scope = ["https://spreadsheets.google.com/feeds",'https://www.googleapis.com/auth/spreadsheets'
+        ,"https://www.googleapis.com/auth/drive.file","https://www.googleapis.com/auth/drive"]
+
+creds = ServiceAccountCredentials.from_json_keyfile_name("creds.json", scope)
+client = gspread.authorize(creds)
+sheet = client.open("INSERT_YOUR_GOOGLE_SHEET_HERE").sheet1
+spreadsheet_key = 'INSERT_YOUR_GOOGLE_SHEET_KEY_HERE'
+wks_name = 'Sheet1'
+
+# Used to initially upload dataframe to Google Sheets
+# d2g.upload(unioned_df, spreadsheet_key, wks_name, credentials=creds, row_names=True)
+
+# Grabbing existing data in Google Sheets and saving to a dataframe
+ws = client.open("INSERT_YOUR_GOOGLE_SHEET_HERE").worksheet("Sheet1")
+existing = gd.get_as_dataframe(ws)
+
+# Making sure there are no null rows or columns coming from Google Sheets
+existing = existing.loc[:, ~existing.columns.str.contains('^Unnamed')]
+existing_clean = existing.dropna(subset=['Name'])
+
+
+final_df = pd.concat([unioned_df, existing_clean])
+final_df = final_df.reset_index(drop=True)
+
+print(final_df)
+
+# Pasting final dataframe back into Google Sheets
+d2g.upload(final_df, spreadsheet_key, wks_name, credentials=creds, row_names=True)
